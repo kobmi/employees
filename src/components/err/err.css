@@ -1,0 +1,12 @@
+.error {
+    width: 860px;
+    height: 100vh;
+}
+.error p {
+    display: block;
+    position: absolute;
+    text-align: center;
+    position: inherit;
+    margin-top: 45vh;
+    font-size: 20px;
+}

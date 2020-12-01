@@ -1,0 +1,6 @@
+.employees-dob-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0 12px;
+}

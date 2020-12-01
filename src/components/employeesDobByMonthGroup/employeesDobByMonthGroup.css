@@ -1,0 +1,9 @@
+.employees-dob-by-month-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.employees-dob-by-month-group-header {
+    font-size: 16px;
+    font-weight: bold;
+}
