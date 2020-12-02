@@ -18,7 +18,14 @@ const App = () => {
 
     useEffect(() => {
         getEmployees();
+        getLocalCheckedEmployees();
+        // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        saveLocalCheckedEmployees();
+        // eslint-disable-next-line
+    }, [checkedEmployees]);
 
     // get employees from api
     const getEmployees = () => {
@@ -37,6 +44,24 @@ const App = () => {
             .then(() => {
                 setLoading(false);
             });
+    };
+    // local checkedEmployess
+    // get checkedEmployees
+    const getLocalCheckedEmployees = () => {
+        if (localStorage.getItem(`checkedEmployees`) === null) {
+            localStorage.setItem(`checkedEmployees`, []);
+        } else {
+            setCheckedEmployees(
+                JSON.parse(localStorage.getItem(`checkedEmployees`))
+            );
+        }
+    };
+    // save checkedEmployees to local
+    const saveLocalCheckedEmployees = () => {
+        localStorage.setItem(
+            `checkedEmployees`,
+            JSON.stringify(checkedEmployees)
+        );
     };
 
     const addToCheckedEmployees = (employee) => {

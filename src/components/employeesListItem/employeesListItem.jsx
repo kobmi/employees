@@ -6,19 +6,13 @@ const EmployeesListItem = ({ employee }) => {
     const { addToCheckedEmployees, removeFromCheckedEmployees } = useContext(
         Context
     );
-
     useEffect(() => {
         getLocalChecked();
-
-        console.log(1);
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         saveLocalChecked();
-        checked
-            ? addToCheckedEmployees(employee)
-            : removeFromCheckedEmployees(employee.id);
         // eslint-disable-next-line
     }, [checked]);
 
@@ -47,6 +41,9 @@ const EmployeesListItem = ({ employee }) => {
                     type="checkbox"
                     onChange={() => {
                         toggleChecked();
+                        checked
+                            ? removeFromCheckedEmployees(employee.id)
+                            : addToCheckedEmployees(employee);
                     }}
                     checked={checked}
                 />
