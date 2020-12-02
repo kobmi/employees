@@ -16,20 +16,9 @@ const App = () => {
     const [loading, setLoading] = useState(true);
     const [isError, setIsError] = useState(false);
 
-    // get checked employees from local
-    useEffect(() => {
-        getLocalCheckedEmpls();
-        // eslint-disable-next-line
-    }, []);
-    // get employees from yalantis api
     useEffect(() => {
         getEmployees();
     }, []);
-    // save checked employees to local when checkedEmployees chenges
-    useEffect(() => {
-        saveLocalCheckedEmpls();
-        // eslint-disable-next-line
-    }, [checkedEmployees]);
 
     // get employees from api
     const getEmployees = () => {
@@ -38,7 +27,6 @@ const App = () => {
                 `https://yalantis-react-school-api.yalantis.com/api/task0/users`
             )
             .then((response) => {
-                // setLoading(true);
                 setEmployees(response.data);
             })
             .catch(function (error) {
@@ -50,37 +38,16 @@ const App = () => {
                 setLoading(false);
             });
     };
-    // add employyes to local
-    const saveLocalCheckedEmpls = () => {
-        localStorage.setItem(
-            "checkedEmployees",
-            JSON.stringify(checkedEmployees)
-        );
-    };
-    // get employees from local
-    const getLocalCheckedEmpls = () => {
-        if (localStorage.getItem(`checkedEmployees`) === null) {
-            localStorage.setItem(
-                `checkedEmployees`,
-                JSON.stringify(checkedEmployees)
-            );
-        } else {
-            let checkedEmployeesLocal = JSON.parse(
-                localStorage.getItem(`checkedEmployees`)
-            );
-            setCheckedEmployees(checkedEmployeesLocal);
-        }
-    };
-    // add employees to checked
+
     const addToCheckedEmployees = (employee) => {
-        setCheckedEmployees((checkedEmployees) => [
-            ...checkedEmployees,
-            employee,
-        ]);
+        setCheckedEmployees((prevState) => {
+            return [...prevState, employee];
+        });
     };
-    // delete employye from checked
-    const deleteFromCheckedEmployees = (id) => {
-        setCheckedEmployees(checkedEmployees.filter((item) => item.id !== id));
+    const removeFromCheckedEmployees = (id) => {
+        setCheckedEmployees((prevState) => {
+            return prevState.filter((item) => item.id !== id);
+        });
     };
 
     // Utils
@@ -175,9 +142,12 @@ const App = () => {
     const view = (
         <Context.Provider
             value={{
-                // state
+                employees,
+                setEmployees,
+                checkedEmployees,
+                setCheckedEmployees,
                 addToCheckedEmployees,
-                deleteFromCheckedEmployees,
+                removeFromCheckedEmployees,
                 // constants
                 _ALPHABETLETTERS,
                 _MONTHS,

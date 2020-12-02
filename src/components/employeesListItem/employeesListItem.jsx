@@ -3,35 +3,42 @@ import { Context } from "../context/Context";
 import "./employeesListItem.css";
 const EmployeesListItem = ({ employee }) => {
     const [checked, setChecked] = useState(false);
-    const { addToCheckedEmployees, deleteFromCheckedEmployees } = useContext(
+    const { addToCheckedEmployees, removeFromCheckedEmployees } = useContext(
         Context
     );
-    const { id, firstName, lastName } = employee;
+
+    useEffect(() => {
+        getLocalChecked();
+
+        console.log(1);
+        // eslint-disable-next-line
+    }, []);
+
+    useEffect(() => {
+        saveLocalChecked();
+        checked
+            ? addToCheckedEmployees(employee)
+            : removeFromCheckedEmployees(employee.id);
+        // eslint-disable-next-line
+    }, [checked]);
 
     const toggleChecked = () => {
         setChecked(!checked);
     };
 
-    useEffect(() => {
-        getLocalChecked();
-    }, []);
-    useEffect(() => {
-        saveLocalChecked();
-    }, [checked]);
-
     // get checked from local
     const getLocalChecked = () => {
-        if (localStorage.getItem(`${id}`) === null) {
-            localStorage.setItem(`${id}`, false);
+        if (localStorage.getItem(`${employee.id}`) === null) {
+            localStorage.setItem(`${employee.id}`, false);
         } else {
-            setChecked(JSON.parse(localStorage.getItem(`${id}`)));
+            setChecked(JSON.parse(localStorage.getItem(`${employee.id}`)));
         }
     };
     // save checked to local
     const saveLocalChecked = () => {
-        localStorage.setItem(`${id}`, JSON.stringify(checked));
+        localStorage.setItem(`${employee.id}`, JSON.stringify(checked));
     };
-    const employeeInfo = `${lastName} ${firstName}`;
+    const employeeInfo = `${employee.lastName} ${employee.firstName}`;
     return (
         <div className="employees-list-item">
             <span>{employeeInfo}</span>
@@ -40,9 +47,6 @@ const EmployeesListItem = ({ employee }) => {
                     type="checkbox"
                     onChange={() => {
                         toggleChecked();
-                        checked
-                            ? deleteFromCheckedEmployees(id)
-                            : addToCheckedEmployees(employee);
                     }}
                     checked={checked}
                 />
